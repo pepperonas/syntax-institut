@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webentwickler Schulung - Syntax Institut</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        .greeting {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        .greeting span {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        .welcome-message {
+            display: none;
+        }
+        .welcome-message.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="page">
@@ -13,6 +30,7 @@
             <div>Syntax<br>Institut</div>
         </a>
 
+        <p class="greeting welcome-message" id="greeting"></p>
         <h1>Webentwickler Schulung</h1>
         <p class="subtitle">Dein Einstieg in die professionelle Webentwicklung</p>
 
@@ -69,13 +87,42 @@
                 </div>
                 <div class="card-count" id="achievementCount">0/20 freigeschaltet</div>
             </a>
+
+            <a href="einstellungen/index.html" class="card card-settings">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Einstellungen</div>
+                <div class="card-description">
+                    Profil, Daten exportieren/importieren und Personalisierung.
+                </div>
+            </a>
         </div>
     </div>
 
     <script>
-        // Update achievement count on homepage
+        // Update achievement count
         const unlocked = JSON.parse(localStorage.getItem('syntaxAchievements') || '[]');
         document.getElementById('achievementCount').textContent = unlocked.length + '/20 freigeschaltet';
+
+        // Show personalized greeting
+        const userName = localStorage.getItem('syntaxUserName');
+        if (userName) {
+            const greeting = document.getElementById('greeting');
+            const hour = new Date().getHours();
+            let greetingText = 'Hallo';
+
+            if (hour >= 5 && hour < 12) {
+                greetingText = 'Guten Morgen';
+            } else if (hour >= 12 && hour < 18) {
+                greetingText = 'Guten Tag';
+            } else if (hour >= 18 && hour < 22) {
+                greetingText = 'Guten Abend';
+            } else {
+                greetingText = 'Gute Nacht';
+            }
+
+            greeting.innerHTML = greetingText + ', <span>' + userName + '</span>! 👋';
+            greeting.classList.add('show');
+        }
     </script>
 </body>
 </html>

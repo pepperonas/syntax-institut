@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Einstellungen - Syntax Institut</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .settings-section h3 {
+            font-size: 20px;
+            color: #fbbf24;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-section h3 span {
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #64748b;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .data-info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+
+        .data-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-info-label {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .data-info-value {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .warning-box-icon {
+            font-size: 20px;
+        }
+
+        .warning-box-text {
+            font-size: 14px;
+            color: #fbbf24;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .settings-section {
+                padding: 20px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .btn {
+                justify-content: center;
+            }
+            .data-info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a href="../index.html" class="logo">
+            <div class="logo-icon">S</div>
+            <div>Syntax<br>Institut</div>
+        </a>
+
+        <nav class="breadcrumb">
+            <a href="../index.html" class="breadcrumb-item breadcrumb-home">🏠</a>
+            <span class="breadcrumb-item breadcrumb-purple breadcrumb-current">Einstellungen</span>
+        </nav>
+
+        <h1>Einstellungen</h1>
+        <p class="subtitle">Personalisierung und Datenverwaltung</p>
+
+        <!-- Profile Section -->
+        <div class="settings-section">
+            <h3><span>👤</span> Profil</h3>
+            <div class="form-group">
+                <label for="userName">Dein Name</label>
+                <input type="text" id="userName" placeholder="Wie sollen wir dich nennen?" maxlength="50">
+            </div>
+            <button class="btn btn-primary" onclick="saveName()">
+                <span>💾</span> Name speichern
+            </button>
+        </div>
+
+        <!-- Data Overview Section -->
+        <div class="settings-section">
+            <h3><span>📊</span> Deine Daten</h3>
+            <div class="data-info" id="dataInfo">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="settings-section">
+            <h3><span>📤</span> Daten exportieren</h3>
+            <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px; line-height: 1.6;">
+                Exportiere alle deine Daten als JSON-Datei. Diese enthält deinen Namen, Quiz-Ergebnisse und freigeschaltete Achievements.
+            </p>
+            <button class="btn btn-success" onclick="exportData()">
+                <span>⬇️</span> Daten herunterladen
+            </button>
+        </div>
+
+        <!-- Import Section -->
+        <div class="settings-section">
+            <h3><span>📥</span> Daten importieren</h3>
+            <div class="warning-box">
+                <span class="warning-box-icon">⚠️</span>
+                <span class="warning-box-text">
+                    Der Import überschreibt alle vorhandenen Daten. Stelle sicher, dass du vorher ein Backup erstellt hast.
+                </span>
+            </div>
+            <div class="file-input-wrapper">
+                <button class="btn btn-secondary">
+                    <span>📁</span> JSON-Datei auswählen
+                </button>
+                <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-section">
+            <h3><span>🗑️</span> Gefahrenzone</h3>
+            <p style="color: #94a3b8; margin-bottom: 20px; font-size: 14px; line-height: 1.6;">
+                Alle Daten unwiderruflich löschen. Diese Aktion kann nicht rückgängig gemacht werden.
+            </p>
+            <button class="btn btn-danger" onclick="deleteAllData()">
+                <span>⚠️</span> Alle Daten löschen
+            </button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Load saved name
+        function loadName() {
+            const name = localStorage.getItem('syntaxUserName');
+            if (name) {
+                document.getElementById('userName').value = name;
+            }
+        }
+
+        // Save name
+        function saveName() {
+            const name = document.getElementById('userName').value.trim();
+            if (name) {
+                localStorage.setItem('syntaxUserName', name);
+                showToast('Name gespeichert!', 'success');
+            } else {
+                localStorage.removeItem('syntaxUserName');
+                showToast('Name entfernt', 'info');
+            }
+        }
+
+        // Update data info
+        function updateDataInfo() {
+            const name = localStorage.getItem('syntaxUserName') || 'Nicht angegeben';
+            const history = JSON.parse(localStorage.getItem('syntaxQuizHistory') || '[]');
+            const achievements = JSON.parse(localStorage.getItem('syntaxAchievements') || '[]');
+            const achievementDates = JSON.parse(localStorage.getItem('syntaxAchievementDates') || '{}');
+
+            const totalCorrect = history.reduce((sum, r) => sum + r.correct, 0);
+            const totalQuestions = history.reduce((sum, r) => sum + r.total, 0);
+
+            let firstQuizDate = 'Keine Quizze';
+            let lastQuizDate = 'Keine Quizze';
+            if (history.length > 0) {
+                firstQuizDate = new Date(history[0].date).toLocaleDateString('de-DE');
+                lastQuizDate = new Date(history[history.length - 1].date).toLocaleDateString('de-DE');
+            }
+
+            document.getElementById('dataInfo').innerHTML = `
+                <div class="data-info-row">
+                    <span class="data-info-label">Name</span>
+                    <span class="data-info-value">${name}</span>
+                </div>
+                <div class="data-info-row">
+                    <span class="data-info-label">Quizze abgeschlossen</span>
+                    <span class="data-info-value">${history.length}</span>
+                </div>
+                <div class="data-info-row">
+                    <span class="data-info-label">Fragen beantwortet</span>
+                    <span class="data-info-value">${totalCorrect} / ${totalQuestions} richtig</span>
+                </div>
+                <div class="data-info-row">
+                    <span class="data-info-label">Achievements</span>
+                    <span class="data-info-value">${achievements.length} / 20</span>
+                </div>
+                <div class="data-info-row">
+                    <span class="data-info-label">Erstes Quiz</span>
+                    <span class="data-info-value">${firstQuizDate}</span>
+                </div>
+                <div class="data-info-row">
+                    <span class="data-info-label">Letztes Quiz</span>
+                    <span class="data-info-value">${lastQuizDate}</span>
+                </div>
+            `;
+        }
+
+        // Export data
+        function exportData() {
+            const data = {
+                version: 1,
+                exportDate: new Date().toISOString(),
+                userName: localStorage.getItem('syntaxUserName') || null,
+                quizHistory: JSON.parse(localStorage.getItem('syntaxQuizHistory') || '[]'),
+                achievements: JSON.parse(localStorage.getItem('syntaxAchievements') || '[]'),
+                achievementDates: JSON.parse(localStorage.getItem('syntaxAchievementDates') || '{}'),
+                visitedCategories: JSON.parse(localStorage.getItem('syntaxVisitedCategories') || '[]')
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `syntax-institut-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast('Backup erstellt!', 'success');
+        }
+
+        // Import data
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // Validate data structure
+                    if (!data.version || !Array.isArray(data.quizHistory)) {
+                        throw new Error('Ungültiges Dateiformat');
+                    }
+
+                    // Confirm import
+                    if (!confirm('Möchtest du wirklich alle Daten importieren? Vorhandene Daten werden überschrieben.')) {
+                        return;
+                    }
+
+                    // Import data
+                    if (data.userName) {
+                        localStorage.setItem('syntaxUserName', data.userName);
+                    } else {
+                        localStorage.removeItem('syntaxUserName');
+                    }
+
+                    localStorage.setItem('syntaxQuizHistory', JSON.stringify(data.quizHistory || []));
+                    localStorage.setItem('syntaxAchievements', JSON.stringify(data.achievements || []));
+                    localStorage.setItem('syntaxAchievementDates', JSON.stringify(data.achievementDates || {}));
+                    localStorage.setItem('syntaxVisitedCategories', JSON.stringify(data.visitedCategories || []));
+
+                    loadName();
+                    updateDataInfo();
+                    showToast('Daten erfolgreich importiert!', 'success');
+
+                } catch (error) {
+                    showToast('Fehler beim Import: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Delete all data
+        function deleteAllData() {
+            if (!confirm('Bist du sicher? Alle Daten werden unwiderruflich gelöscht.')) {
+                return;
+            }
+
+            if (!confirm('Letzte Warnung: Diese Aktion kann NICHT rückgängig gemacht werden!')) {
+                return;
+            }
+
+            localStorage.removeItem('syntaxUserName');
+            localStorage.removeItem('syntaxQuizHistory');
+            localStorage.removeItem('syntaxAchievements');
+            localStorage.removeItem('syntaxAchievementDates');
+            localStorage.removeItem('syntaxVisitedCategories');
+
+            document.getElementById('userName').value = '';
+            updateDataInfo();
+            showToast('Alle Daten gelöscht', 'info');
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        loadName();
+        updateDataInfo();
+    </script>
+</body>
+</html>

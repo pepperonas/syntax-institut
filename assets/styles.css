@@ -250,6 +250,17 @@ h3 {
     box-shadow: 0 10px 40px rgba(251, 191, 36, 0.2);
 }
 
+/* Settings card */
+.card-settings {
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.1), rgba(100, 116, 139, 0.1));
+    border-color: rgba(148, 163, 184, 0.3);
+}
+
+.card-settings:hover {
+    border-color: #94a3b8;
+    box-shadow: 0 10px 40px rgba(148, 163, 184, 0.2);
+}
+
 /* ===== PLACEHOLDER PAGE ===== */
 .placeholder-content {
     text-align: center;
