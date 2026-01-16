@@ -239,6 +239,17 @@ h3 {
     box-shadow: 0 10px 40px rgba(236, 72, 153, 0.2);
 }
 
+/* Achievements card */
+.card-achievements {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.card-achievements:hover {
+    border-color: #fbbf24;
+    box-shadow: 0 10px 40px rgba(251, 191, 36, 0.2);
+}
+
 /* ===== PLACEHOLDER PAGE ===== */
 .placeholder-content {
     text-align: center;

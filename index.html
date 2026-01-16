@@ -60,7 +60,22 @@
                     Deine Quiz-Ergebnisse und Lernfortschritt im Überblick.
                 </div>
             </a>
+
+            <a href="achievements/index.html" class="card card-achievements">
+                <div class="card-icon">🏆</div>
+                <div class="card-title">Achievements</div>
+                <div class="card-description">
+                    Schalte Erfolge frei und sammle Abzeichen für deine Leistungen.
+                </div>
+                <div class="card-count" id="achievementCount">0/20 freigeschaltet</div>
+            </a>
         </div>
     </div>
+
+    <script>
+        // Update achievement count on homepage
+        const unlocked = JSON.parse(localStorage.getItem('syntaxAchievements') || '[]');
+        document.getElementById('achievementCount').textContent = unlocked.length + '/20 freigeschaltet';
+    </script>
 </body>
 </html>

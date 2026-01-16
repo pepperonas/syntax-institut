@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Syntax Institut</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        .achievements-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .achievements-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            height: 12px;
+            margin: 20px auto;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .achievements-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #ec4899, #fbbf24);
+            border-radius: 25px;
+            transition: width 0.5s ease;
+        }
+
+        .achievements-count {
+            font-size: 18px;
+            color: #94a3b8;
+        }
+
+        .achievements-count span {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .achievement {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .achievement:hover::before {
+            opacity: 1;
+        }
+
+        .achievement.unlocked {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .achievement.unlocked .achievement-icon {
+            filter: none;
+            transform: scale(1);
+        }
+
+        .achievement.locked {
+            opacity: 0.5;
+        }
+
+        .achievement.locked .achievement-icon {
+            filter: grayscale(1) brightness(0.5);
+            transform: scale(0.9);
+        }
+
+        .achievement-icon {
+            font-size: 48px;
+            min-width: 60px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .achievement-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .achievement-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .achievement-description {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .achievement-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 12px;
+        }
+
+        .achievement-rarity {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rarity-common {
+            background: rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+        }
+
+        .rarity-uncommon {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .rarity-rare {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+
+        .rarity-epic {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+
+        .rarity-legendary {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .achievement-date {
+            color: #64748b;
+        }
+
+        .achievement.unlocked .achievement-title {
+            background: linear-gradient(90deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unlock-animation {
+            animation: unlockPulse 0.6s ease-out;
+        }
+
+        @keyframes unlockPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .achievement-categories {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-color: transparent;
+            color: white;
+        }
+
+        .locked-hint {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .locked-hint::before {
+            content: '🔒';
+            font-size: 10px;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ef4444, #ec4899);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: newPulse 2s infinite;
+        }
+
+        @keyframes newPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .achievements-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            .achievement {
+                padding: 20px;
+            }
+            .achievement-icon {
+                font-size: 40px;
+                min-width: 50px;
+            }
+            .achievement-title {
+                font-size: 16px;
+            }
+            .achievements-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-btn {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+            .summary-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a href="../index.html" class="logo">
+            <div class="logo-icon">S</div>
+            <div>Syntax<br>Institut</div>
+        </a>
+
+        <nav class="breadcrumb">
+            <a href="../index.html" class="breadcrumb-item breadcrumb-home">🏠</a>
+            <span class="breadcrumb-item breadcrumb-purple breadcrumb-current">Achievements</span>
+        </nav>
+
+        <div class="achievements-header">
+            <h1>Achievements</h1>
+            <p class="subtitle">Schalte Erfolge frei und verfolge deinen Fortschritt</p>
+            <div class="achievements-progress">
+                <div class="achievements-progress-fill" id="progressFill"></div>
+            </div>
+            <p class="achievements-count"><span id="unlockedCount">0</span> von <span id="totalCount">20</span> freigeschaltet</p>
+        </div>
+
+        <div class="achievements-summary" id="summary">
+        </div>
+
+        <div class="achievement-categories">
+            <button class="category-btn active" data-category="all">Alle</button>
+            <button class="category-btn" data-category="quiz">Quiz</button>
+            <button class="category-btn" data-category="streak">Serien</button>
+            <button class="category-btn" data-category="explorer">Entdecker</button>
+            <button class="category-btn" data-category="special">Spezial</button>
+        </div>
+
+        <div class="achievements-grid" id="achievementsGrid">
+        </div>
+    </div>
+
+    <script>
+        // Achievement definitions
+        const achievements = [
+            // Quiz Achievements
+            {
+                id: 'first_quiz',
+                title: 'Erste Schritte',
+                description: 'Schließe dein erstes Quiz ab',
+                icon: '🎯',
+                category: 'quiz',
+                rarity: 'common',
+                check: (stats) => stats.totalQuizzes >= 1
+            },
+            {
+                id: 'perfect_score',
+                title: 'Perfektionist',
+                description: 'Erreiche 100% in einem Quiz',
+                icon: '⭐',
+                category: 'quiz',
+                rarity: 'uncommon',
+                check: (stats) => stats.perfectScores >= 1
+            },
+            {
+                id: 'triple_perfect',
+                title: 'Hattrick',
+                description: 'Erreiche 3x hintereinander 100%',
+                icon: '🏆',
+                category: 'quiz',
+                rarity: 'epic',
+                check: (stats) => stats.consecutivePerfect >= 3
+            },
+            {
+                id: 'quiz_master',
+                title: 'Quiz-Meister',
+                description: 'Schließe 10 Quizze ab',
+                icon: '🎓',
+                category: 'quiz',
+                rarity: 'rare',
+                check: (stats) => stats.totalQuizzes >= 10
+            },
+            {
+                id: 'quiz_legend',
+                title: 'Quiz-Legende',
+                description: 'Schließe 50 Quizze ab',
+                icon: '👑',
+                category: 'quiz',
+                rarity: 'legendary',
+                check: (stats) => stats.totalQuizzes >= 50
+            },
+            {
+                id: 'quick_learner',
+                title: 'Schneller Lerner',
+                description: 'Verbessere dich von unter 60% auf 100%',
+                icon: '📈',
+                category: 'quiz',
+                rarity: 'rare',
+                check: (stats) => stats.improvedToPercent
+            },
+            {
+                id: 'consistent',
+                title: 'Beständig',
+                description: 'Erreiche 5x mindestens 80%',
+                icon: '💪',
+                category: 'quiz',
+                rarity: 'uncommon',
+                check: (stats) => stats.above80Count >= 5
+            },
+
+            // Streak Achievements
+            {
+                id: 'daily_learner',
+                title: 'Täglicher Lerner',
+                description: 'Lerne an 2 verschiedenen Tagen',
+                icon: '📅',
+                category: 'streak',
+                rarity: 'common',
+                check: (stats) => stats.uniqueDays >= 2
+            },
+            {
+                id: 'week_warrior',
+                title: 'Wochen-Krieger',
+                description: 'Lerne an 7 verschiedenen Tagen',
+                icon: '🗓️',
+                category: 'streak',
+                rarity: 'rare',
+                check: (stats) => stats.uniqueDays >= 7
+            },
+            {
+                id: 'month_master',
+                title: 'Monats-Meister',
+                description: 'Lerne an 30 verschiedenen Tagen',
+                icon: '📆',
+                category: 'streak',
+                rarity: 'legendary',
+                check: (stats) => stats.uniqueDays >= 30
+            },
+            {
+                id: 'night_owl',
+                title: 'Nachteule',
+                description: 'Schließe ein Quiz nach 22 Uhr ab',
+                icon: '🦉',
+                category: 'streak',
+                rarity: 'uncommon',
+                check: (stats) => stats.nightOwl
+            },
+            {
+                id: 'early_bird',
+                title: 'Frühaufsteher',
+                description: 'Schließe ein Quiz vor 7 Uhr ab',
+                icon: '🌅',
+                category: 'streak',
+                rarity: 'uncommon',
+                check: (stats) => stats.earlyBird
+            },
+
+            // Explorer Achievements
+            {
+                id: 'curious',
+                title: 'Neugierig',
+                description: 'Besuche alle Kategorien der Schulung',
+                icon: '🔍',
+                category: 'explorer',
+                rarity: 'common',
+                check: (stats) => stats.visitedCategories >= 4
+            },
+            {
+                id: 'api_expert',
+                title: 'API-Experte',
+                description: 'Schließe das API-Quiz 5x mit 100% ab',
+                icon: '🔗',
+                category: 'explorer',
+                rarity: 'epic',
+                check: (stats) => stats.apiPerfectCount >= 5
+            },
+            {
+                id: 'comeback',
+                title: 'Comeback',
+                description: 'Mache ein Quiz nach 7 Tagen Pause',
+                icon: '🔄',
+                category: 'explorer',
+                rarity: 'rare',
+                check: (stats) => stats.comeback
+            },
+
+            // Special Achievements
+            {
+                id: 'century',
+                title: 'Jahrhundert',
+                description: 'Beantworte insgesamt 100 Fragen richtig',
+                icon: '💯',
+                category: 'special',
+                rarity: 'rare',
+                check: (stats) => stats.totalCorrect >= 100
+            },
+            {
+                id: 'five_hundred',
+                title: 'Halbzeit',
+                description: 'Beantworte insgesamt 500 Fragen richtig',
+                icon: '🎪',
+                category: 'special',
+                rarity: 'legendary',
+                check: (stats) => stats.totalCorrect >= 500
+            },
+            {
+                id: 'no_mistakes',
+                title: 'Fehlerfrei',
+                description: 'Beantworte 25 Fragen in Folge richtig',
+                icon: '✨',
+                category: 'special',
+                rarity: 'epic',
+                check: (stats) => stats.consecutiveCorrect >= 25
+            },
+            {
+                id: 'dedication',
+                title: 'Hingabe',
+                description: 'Verbringe insgesamt 1 Stunde mit Quizzen',
+                icon: '⏰',
+                category: 'special',
+                rarity: 'rare',
+                check: (stats) => stats.totalTime >= 60
+            },
+            {
+                id: 'completionist',
+                title: 'Komplettist',
+                description: 'Schalte alle anderen Achievements frei',
+                icon: '🌟',
+                category: 'special',
+                rarity: 'legendary',
+                check: (stats) => stats.unlockedCount >= 19
+            }
+        ];
+
+        // Calculate stats from history
+        function calculateStats() {
+            const history = JSON.parse(localStorage.getItem('syntaxQuizHistory') || '[]');
+            const unlockedAchievements = JSON.parse(localStorage.getItem('syntaxAchievements') || '[]');
+            const visitedCategories = JSON.parse(localStorage.getItem('syntaxVisitedCategories') || '[]');
+
+            const stats = {
+                totalQuizzes: history.length,
+                perfectScores: history.filter(r => r.percentage === 100).length,
+                totalCorrect: history.reduce((sum, r) => sum + r.correct, 0),
+                totalQuestions: history.reduce((sum, r) => sum + r.total, 0),
+                above80Count: history.filter(r => r.percentage >= 80).length,
+                uniqueDays: new Set(history.map(r => new Date(r.date).toDateString())).size,
+                consecutivePerfect: 0,
+                consecutiveCorrect: 0,
+                nightOwl: false,
+                earlyBird: false,
+                improvedToPercent: false,
+                comeback: false,
+                apiPerfectCount: history.filter(r => r.quiz === 'APIs' && r.percentage === 100).length,
+                visitedCategories: visitedCategories.length,
+                unlockedCount: unlockedAchievements.length,
+                totalTime: Math.floor(history.length * 2) // Estimate 2 min per quiz
+            };
+
+            // Check consecutive perfect scores
+            let consecutive = 0;
+            let maxConsecutive = 0;
+            for (let i = history.length - 1; i >= 0; i--) {
+                if (history[i].percentage === 100) {
+                    consecutive++;
+                    maxConsecutive = Math.max(maxConsecutive, consecutive);
+                } else {
+                    consecutive = 0;
+                }
+            }
+            stats.consecutivePerfect = maxConsecutive;
+
+            // Check consecutive correct answers (estimate)
+            stats.consecutiveCorrect = stats.consecutivePerfect * 5;
+
+            // Check time-based achievements
+            history.forEach(r => {
+                const hour = new Date(r.date).getHours();
+                if (hour >= 22 || hour < 5) stats.nightOwl = true;
+                if (hour >= 5 && hour < 7) stats.earlyBird = true;
+            });
+
+            // Check improvement
+            if (history.length >= 2) {
+                const hasLowScore = history.some(r => r.percentage < 60);
+                const hasPerfect = history.some(r => r.percentage === 100);
+                if (hasLowScore && hasPerfect) {
+                    const lowIndex = history.findIndex(r => r.percentage < 60);
+                    const perfectIndex = history.findIndex(r => r.percentage === 100);
+                    if (perfectIndex > lowIndex) stats.improvedToPercent = true;
+                }
+            }
+
+            // Check comeback (7+ days between quizzes)
+            if (history.length >= 2) {
+                for (let i = 1; i < history.length; i++) {
+                    const daysDiff = (new Date(history[i].date) - new Date(history[i-1].date)) / (1000 * 60 * 60 * 24);
+                    if (daysDiff >= 7) stats.comeback = true;
+                }
+            }
+
+            return stats;
+        }
+
+        // Check and unlock achievements
+        function checkAchievements() {
+            const stats = calculateStats();
+            let unlockedAchievements = JSON.parse(localStorage.getItem('syntaxAchievements') || '[]');
+            let newUnlocks = [];
+
+            achievements.forEach(achievement => {
+                if (!unlockedAchievements.includes(achievement.id) && achievement.check(stats)) {
+                    unlockedAchievements.push(achievement.id);
+                    newUnlocks.push(achievement.id);
+
+                    // Store unlock date
+                    const unlockDates = JSON.parse(localStorage.getItem('syntaxAchievementDates') || '{}');
+                    unlockDates[achievement.id] = new Date().toISOString();
+                    localStorage.setItem('syntaxAchievementDates', JSON.stringify(unlockDates));
+                }
+            });
+
+            // Update unlocked count for completionist achievement
+            stats.unlockedCount = unlockedAchievements.length;
+
+            // Check completionist again with updated count
+            const completionist = achievements.find(a => a.id === 'completionist');
+            if (!unlockedAchievements.includes('completionist') && completionist.check(stats)) {
+                unlockedAchievements.push('completionist');
+                newUnlocks.push('completionist');
+            }
+
+            localStorage.setItem('syntaxAchievements', JSON.stringify(unlockedAchievements));
+            return { unlockedAchievements, newUnlocks, stats };
+        }
+
+        // Render achievements
+        function renderAchievements(category = 'all') {
+            const { unlockedAchievements, newUnlocks, stats } = checkAchievements();
+            const unlockDates = JSON.parse(localStorage.getItem('syntaxAchievementDates') || '{}');
+            const grid = document.getElementById('achievementsGrid');
+
+            const filteredAchievements = category === 'all'
+                ? achievements
+                : achievements.filter(a => a.category === category);
+
+            grid.innerHTML = filteredAchievements.map(achievement => {
+                const isUnlocked = unlockedAchievements.includes(achievement.id);
+                const isNew = newUnlocks.includes(achievement.id);
+                const unlockDate = unlockDates[achievement.id];
+
+                return `
+                    <div class="achievement ${isUnlocked ? 'unlocked' : 'locked'} ${isNew ? 'unlock-animation' : ''}">
+                        ${isNew ? '<div class="new-badge">Neu!</div>' : ''}
+                        <div class="achievement-icon">${achievement.icon}</div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">${achievement.title}</div>
+                            <div class="achievement-description">${achievement.description}</div>
+                            <div class="achievement-meta">
+                                <span class="achievement-rarity rarity-${achievement.rarity}">${achievement.rarity}</span>
+                                ${isUnlocked && unlockDate ? `<span class="achievement-date">${new Date(unlockDate).toLocaleDateString('de-DE')}</span>` : ''}
+                                ${!isUnlocked ? '<span class="locked-hint">Noch nicht freigeschaltet</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update progress
+            const unlockedCount = unlockedAchievements.length;
+            document.getElementById('unlockedCount').textContent = unlockedCount;
+            document.getElementById('progressFill').style.width = `${(unlockedCount / achievements.length) * 100}%`;
+
+            // Update summary
+            renderSummary(stats, unlockedAchievements);
+        }
+
+        function renderSummary(stats, unlockedAchievements) {
+            const rarityCount = {
+                common: unlockedAchievements.filter(id => achievements.find(a => a.id === id)?.rarity === 'common').length,
+                uncommon: unlockedAchievements.filter(id => achievements.find(a => a.id === id)?.rarity === 'uncommon').length,
+                rare: unlockedAchievements.filter(id => achievements.find(a => a.id === id)?.rarity === 'rare').length,
+                epic: unlockedAchievements.filter(id => achievements.find(a => a.id === id)?.rarity === 'epic').length,
+                legendary: unlockedAchievements.filter(id => achievements.find(a => a.id === id)?.rarity === 'legendary').length
+            };
+
+            document.getElementById('summary').innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-icon">⚪</div>
+                    <div class="summary-value">${rarityCount.common}/4</div>
+                    <div class="summary-label">Common</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🟢</div>
+                    <div class="summary-value">${rarityCount.uncommon}/4</div>
+                    <div class="summary-label">Uncommon</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🔵</div>
+                    <div class="summary-value">${rarityCount.rare}/5</div>
+                    <div class="summary-label">Rare</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🟣</div>
+                    <div class="summary-value">${rarityCount.epic}/3</div>
+                    <div class="summary-label">Epic</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🟡</div>
+                    <div class="summary-value">${rarityCount.legendary}/4</div>
+                    <div class="summary-label">Legendary</div>
+                </div>
+            `;
+        }
+
+        // Category filter
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderAchievements(btn.dataset.category);
+            });
+        });
+
+        // Initial render
+        renderAchievements();
+    </script>
+</body>
+</html>
