@@ -21,9 +21,10 @@ npx serve .
 ```
 /                           → Startseite (Übersicht aller Kategorien)
 /web-grundlagen/            → Kategorie-Übersicht
-/web-grundlagen/apis/       → Interaktive API-Präsentation (einziger fertiger Inhalt)
+/web-grundlagen/apis/       → Interaktive API-Präsentation (20 Folien)
 /frontend/                  → Kategorie-Übersicht (React, Vue, TypeScript)
 /backend/                   → Kategorie-Übersicht (Node.js, Datenbanken, REST-API)
+/backend/rest-api/          → REST-API Präsentation (10 Folien)
 /tools/                     → Kategorie-Übersicht (Git, Terminal, VS Code)
 /statistiken/               → Quiz-Statistiken mit Charts
 /achievements/              → Erfolge/Badges System (20 freischaltbare Achievements)
@@ -36,7 +37,9 @@ npx serve .
 1. **Startseite** (`/index.html`) - Karten zu allen Kategorien
 2. **Kategorie-Index** (`*/index.html`) - Karten zu Unterthemen mit Quiz- und Restart-Buttons
 3. **Platzhalter** (`*/thema/index.html`) - "Inhalt folgt..." Template
-4. **API-Präsentation** (`/web-grundlagen/apis/index.html`) - Vollständige interaktive Präsentation
+4. **Präsentationen** - Vollständige interaktive Slide-Decks:
+   - `/web-grundlagen/apis/index.html` - API-Grundlagen (20 Folien)
+   - `/backend/rest-api/index.html` - REST-API entwickeln (10 Folien)
 5. **Statistiken** (`/statistiken/index.html`) - Quiz-Ergebnisse mit localStorage und Charts
 6. **Achievements** (`/achievements/index.html`) - Gamification mit 20 Badges
 7. **Einstellungen** (`/einstellungen/index.html`) - Benutzerprofil und Daten-Export/Import
@@ -50,23 +53,69 @@ npx serve .
 - Statistics: `.card-stats`
 - Colors: `breadcrumb-purple`, `breadcrumb-pink`, `breadcrumb-green`, `breadcrumb-orange`
 
-### API Presentation (Standalone)
-Located at `/web-grundlagen/apis/index.html` with embedded CSS/JS:
+## Präsentationen
+
+### Einheitliches Design
+Alle Präsentationen verwenden das gleiche Grundlayout:
+- Embedded CSS/JS (keine externen Abhängigkeiten)
+- Farbschema je nach Kategorie (Lila für Web-Grundlagen, Orange für Backend)
+- Einheitliche Progress-Bar am unteren Bildschirmrand
+
+### Progress-Bar Template
+```css
+.slide-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 10px 25px;
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 15px;
+}
+```
+
+### Navigation Features
+- **Loop-Navigation**: Von erster Folie zurück zur letzten, von letzter vor zur ersten
+- **Slide Persistence**: Position wird im localStorage gespeichert
+- **Hash Navigation**: `#start` setzt auf Folie 1 zurück, `#quiz` springt zum Quiz
+- **Keyboard Support**: Pfeiltasten und Leertaste für Navigation
+
+### Neue Präsentation erstellen
+1. Kopiere `/web-grundlagen/apis/index.html` als Template
+2. Passe Farbschema an (z.B. `#6366f1` → `#f97316` für Backend)
+3. Ändere localStorage-Key (z.B. `apis-currentSlide` → `rest-api-currentSlide`)
+4. Aktualisiere Breadcrumbs für korrekten Pfad
+5. Verlinke von vorheriger Präsentation ("Weiter lernen" Link)
+
+### API-Präsentation (Web-Grundlagen)
+Located at `/web-grundlagen/apis/index.html`:
+- 20 Folien zu API-Grundlagen
 - Slide navigation: `showSlide()`, `navigatePrev()`, `navigateNext()`
 - Animation: `startAnimation()`, `replayAnimation()`
-- Quiz: `checkQuiz()`, `resetQuiz()`
-- **Slide Persistence**: Aktuelle Folie wird im localStorage gespeichert (`apis-currentSlide`)
-- **Hash Navigation**: `#quiz` springt zum Quiz, `#start` setzt auf Folie 1 zurück
+- Quiz: `checkQuiz()`, `resetQuiz()` (5 Fragen)
+- Farbschema: Lila (`#6366f1`)
 
-### Features
+### REST-API Präsentation (Backend)
+Located at `/backend/rest-api/index.html`:
+- 10 Folien zu Express.js und CRUD
+- Themen: Setup, Routen, GET/POST/PUT/DELETE, Status Codes, Best Practices
+- Verlinkt von API-Präsentation ("Weiter lernen" Link)
+- Farbschema: Orange (`#f97316`)
 
-#### Slide Persistence
-Die API-Präsentation merkt sich die aktuelle Folie:
+## Features
+
+### Slide Persistence
+Alle Präsentationen merken sich die aktuelle Folie:
 - Position wird bei jedem Folienwechsel in `localStorage` gespeichert
 - Nach Seiten-Refresh wird automatisch zur letzten Folie gesprungen
 - `#start` Hash setzt Position zurück und löscht gespeicherten Stand
 
-#### Card Buttons
+### Card Buttons
 Kategorie-Karten können mehrere Buttons haben:
 ```html
 <div class="card-buttons">
@@ -75,14 +124,14 @@ Kategorie-Karten können mehrere Buttons haben:
 </div>
 ```
 - Primärer Button (grün): Volle Breite, z.B. "Zum Quiz"
-- Sekundärer Button (lila): Kompakt daneben, z.B. Restart-Icon
+- Sekundärer Button (lila): Kompakt daneben, z.B. Restart-Icon (🔄)
 
-#### Quiz System
+### Quiz System
 - 5 Multiple-Choice Fragen pro Präsentation
 - Ergebnisse werden in localStorage gespeichert
 - Statistik-Seite zeigt Verlauf und Durchschnitt
 
-#### Achievements System
+### Achievements System
 - 20 freischaltbare Badges
 - Fortschrittsbasiert (Quiz-Ergebnisse, Lernzeit, etc.)
 - Visuelle Darstellung mit Lock/Unlock Status
@@ -103,9 +152,30 @@ All pages use clickable breadcrumbs:
 | Key | Beschreibung |
 |-----|--------------|
 | `apis-currentSlide` | Aktuelle Folie der API-Präsentation |
+| `rest-api-currentSlide` | Aktuelle Folie der REST-API-Präsentation |
 | `quizResults` | Array mit Quiz-Ergebnissen |
 | `achievements` | Freigeschaltete Achievements |
 | `userProfile` | Benutzerprofil-Daten |
+
+## Präsentations-Verlinkung
+
+Die Präsentationen sind miteinander verlinkt für einen Lernpfad:
+```
+APIs verstehen → REST API entwickeln → (weitere folgen)
+```
+
+Auf der letzten Folie jeder Präsentation gibt es einen "Weiter lernen" Link:
+```html
+<div class="link-item">
+    <div class="link-icon">🚀</div>
+    <div class="link-content">
+        <h3>Weiter lernen: REST API entwickeln</h3>
+        <a href="../../backend/rest-api/index.html" class="next-link">
+            Zur REST API Präsentation →
+        </a>
+    </div>
+</div>
+```
 
 ## Deployment
 
