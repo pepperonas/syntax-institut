@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Single-file HTML presentation about APIs for Syntax Institut. No build system required.
+Webentwickler-Schulungsplattform für das Syntax Institut mit navigierbarer Verzeichnisstruktur und interaktiven Präsentationen.
 
 ## Development
 
-Open `index.html` directly in a browser. For live reload during development, use any local server:
+Open `index.html` directly in a browser. For live reload:
 ```bash
 python3 -m http.server 8000
 # or
@@ -17,28 +17,52 @@ npx serve .
 
 ## Architecture
 
-**index.html** - Complete self-contained presentation with:
-- Embedded CSS (~1600 lines) with responsive breakpoints at 1024px, 768px, 480px
-- Embedded JavaScript for slide navigation, quiz logic, and API animation
-- 20 slides about APIs (definition, REST, HTTP methods, examples, quiz)
+### Directory Structure
+```
+/                           → Startseite (Übersicht aller Kategorien)
+/web-grundlagen/            → Kategorie-Übersicht
+/web-grundlagen/apis/       → Interaktive API-Präsentation (einziger fertiger Inhalt)
+/frontend/                  → Kategorie-Übersicht
+/backend/                   → Kategorie-Übersicht
+/tools/                     → Kategorie-Übersicht
+/assets/styles.css          → Gemeinsame Styles für alle Seiten
+```
 
-**Key CSS sections:**
-- Base styles and typography
-- Responsive media queries (tablet, mobile landscape, mobile portrait, high DPI, landscape orientation)
-- Progress bar and navigation buttons (`.slide-progress`)
-- API animation keyframes (`.api-animation`)
-- Quiz interactivity (`.quiz-*` classes)
+### Page Types
+1. **Startseite** (`/index.html`) - Karten zu allen Kategorien
+2. **Kategorie-Index** (`*/index.html`) - Karten zu Unterthemen
+3. **Platzhalter** (`*/thema/index.html`) - "Inhalt folgt..." Template
+4. **API-Präsentation** (`/web-grundlagen/apis/index.html`) - Vollständige Präsentation
 
-**JavaScript components:**
-- `showSlide(n)` / `navigatePrev()` / `navigateNext()` - Slide navigation
-- `startAnimation()` / `replayAnimation()` - API data flow animation
-- `checkQuiz()` / `resetQuiz()` - Quiz validation
+### Shared Styles (`assets/styles.css`)
+- Layout: `.page`, `.container`
+- Navigation: `.logo`, `.breadcrumb`, `.breadcrumb-item`
+- Cards: `.cards-grid`, `.card`, `.card-title`, `.card-description`
+- Placeholder: `.placeholder-content`, `.placeholder-icon`, `.back-link`
+- Colors: `breadcrumb-purple`, `breadcrumb-pink`, `breadcrumb-green`, `breadcrumb-orange`
+
+### API Presentation (Standalone)
+Located at `/web-grundlagen/apis/index.html` with embedded CSS/JS:
+- Slide navigation: `showSlide()`, `navigatePrev()`, `navigateNext()`
+- Animation: `startAnimation()`, `replayAnimation()`
+- Quiz: `checkQuiz()`, `resetQuiz()`
+
+## Breadcrumb Navigation
+
+All pages use clickable breadcrumbs:
+```html
+<nav class="breadcrumb">
+    <a href="../../index.html" class="breadcrumb-item breadcrumb-home">🏠</a>
+    <a href="../index.html" class="breadcrumb-item breadcrumb-purple">Kategorie</a>
+    <span class="breadcrumb-item breadcrumb-pink breadcrumb-current">Thema</span>
+</nav>
+```
 
 ## Deployment
 
-Hosted via GitHub Pages at: https://pepperonas.github.io/syntax-institut/
+GitHub Pages: https://pepperonas.github.io/syntax-institut/
 
-Push to `main` branch triggers automatic deployment.
+Push to `main` triggers automatic deployment.
 
 ## Contact
 

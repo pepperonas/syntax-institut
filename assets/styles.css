@@ -1,0 +1,346 @@
+/* ===== SYNTAX INSTITUT - GEMEINSAME STYLES ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2744 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* ===== LAYOUT ===== */
+.page {
+    min-height: 100vh;
+    padding: 100px 80px 50px;
+    position: relative;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ===== LOGO ===== */
+.logo {
+    position: absolute;
+    top: 30px;
+    left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    z-index: 10;
+    text-decoration: none;
+    color: white;
+}
+
+.logo:hover {
+    opacity: 0.9;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ===== BREADCRUMB NAVIGATION ===== */
+.breadcrumb {
+    position: absolute;
+    top: 30px;
+    right: 80px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.breadcrumb-item {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-item:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.breadcrumb-home {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 10px;
+}
+
+.breadcrumb-purple {
+    background: #6366f1;
+}
+
+.breadcrumb-pink {
+    background: #ec4899;
+}
+
+.breadcrumb-green {
+    background: #10b981;
+}
+
+.breadcrumb-orange {
+    background: #f59e0b;
+}
+
+.breadcrumb-current {
+    opacity: 0.8;
+    cursor: default;
+}
+
+.breadcrumb-current:hover {
+    transform: none;
+    filter: none;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1 {
+    font-size: 72px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #6366f1;
+}
+
+h3 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 28px;
+    color: #94a3b8;
+    margin-bottom: 40px;
+}
+
+/* ===== CARDS ===== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #6366f1;
+    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+}
+
+.card-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    font-size: 16px;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.card-count {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #6366f1;
+}
+
+/* ===== PLACEHOLDER PAGE ===== */
+.placeholder-content {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.placeholder-icon {
+    font-size: 80px;
+    margin-bottom: 30px;
+    opacity: 0.5;
+}
+
+.placeholder-text {
+    font-size: 24px;
+    color: #94a3b8;
+    margin-bottom: 40px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* ===== HIGHLIGHT ===== */
+.highlight {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .page {
+        padding: 50px 40px;
+    }
+    h1 {
+        font-size: 52px;
+    }
+    h2 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 80px 25px 50px;
+    }
+    h1 {
+        font-size: 36px;
+    }
+    h2 {
+        font-size: 28px;
+    }
+    h3 {
+        font-size: 22px;
+    }
+    .logo {
+        left: 25px;
+        top: 20px;
+        font-size: 16px;
+        gap: 10px;
+    }
+    .logo-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    .breadcrumb {
+        right: 25px;
+        top: 20px;
+        gap: 6px;
+    }
+    .breadcrumb-item {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    .cards-grid {
+        gap: 20px;
+    }
+    .card {
+        padding: 20px;
+    }
+    .card-icon {
+        font-size: 36px;
+    }
+    .card-title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page {
+        padding: 70px 15px 40px;
+    }
+    h1 {
+        font-size: 28px;
+    }
+    h2 {
+        font-size: 22px;
+    }
+    h3 {
+        font-size: 18px;
+    }
+    .subtitle {
+        font-size: 18px;
+    }
+    .logo {
+        left: 15px;
+        top: 15px;
+        font-size: 12px;
+    }
+    .logo-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    .breadcrumb {
+        right: 15px;
+        top: 15px;
+        gap: 4px;
+    }
+    .breadcrumb-item {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+    .card-icon {
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+    .card-title {
+        font-size: 18px;
+    }
+    .card-description {
+        font-size: 14px;
+    }
+    .placeholder-icon {
+        font-size: 60px;
+    }
+    .placeholder-text {
+        font-size: 18px;
+    }
+}

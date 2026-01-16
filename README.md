@@ -1,39 +1,65 @@
-# Syntax Institut - API Präsentation
+# Syntax Institut - Webentwickler Schulung
 
-Eine interaktive Präsentation zum Thema **APIs verstehen** für das Syntax Institut.
+Umfassende Schulungsplattform für angehende Webentwickler.
 
-## Inhalt
+## Struktur
 
-Die Präsentation behandelt folgende Themen:
+```
+syntax-institut/
+├── index.html                    (Startseite)
+├── web-grundlagen/
+│   ├── index.html                (Übersicht)
+│   ├── html/
+│   ├── css/
+│   ├── javascript/
+│   └── apis/                     (← Interaktive Präsentation)
+├── frontend/
+│   ├── index.html
+│   ├── react/
+│   ├── vue/
+│   └── typescript/
+├── backend/
+│   ├── index.html
+│   ├── nodejs/
+│   ├── datenbanken/
+│   └── rest-api/
+├── tools/
+│   ├── index.html
+│   ├── git/
+│   ├── terminal/
+│   └── vscode/
+└── assets/
+    └── styles.css
+```
 
-- Was ist eine API?
-- REST API Grundlagen
-- HTTP-Methoden (GET, POST, PUT, DELETE)
-- API Endpoints und URL-Struktur
-- Praxisbeispiel: Wetter-App
-- APIs im Alltag
-- Interaktives Quiz
+## Kategorien
 
-## Features
+### Web-Grundlagen
+HTML, CSS, JavaScript und APIs - die Basis jeder Webanwendung.
 
-- Vollständig responsive (Desktop, Tablet, Mobile)
-- Animierte API-Datenfluss-Visualisierung
-- Interaktiver Wissens-Check mit 5 Fragen
-- Fortschrittsanzeige mit Seitenzähler
-- Tastatur-Navigation (Pfeiltasten)
+### Frontend
+Moderne Frameworks: React, Vue.js und TypeScript.
+
+### Backend
+Server-Entwicklung: Node.js, Datenbanken und REST API Entwicklung.
+
+### Tools
+Entwicklungsumgebung: Git, Terminal und VS Code.
 
 ## Live Demo
 
 <a href="https://pepperonas.github.io/syntax-institut/" target="_blank">https://pepperonas.github.io/syntax-institut/</a>
 
-## Verwendung
+## API-Präsentation
 
-Öffne `index.html` im Browser oder besuche die GitHub Pages URL.
+Die interaktive API-Präsentation mit Quiz und Animationen findest du unter:
+<a href="https://pepperonas.github.io/syntax-institut/web-grundlagen/apis/" target="_blank">Web-Grundlagen → APIs</a>
 
-**Navigation:**
-- Vor/Zurück-Buttons in der Statusleiste
-- Pfeiltasten (← →) auf der Tastatur
-- Leertaste für nächste Folie
+## Navigation
+
+- Klickbare Breadcrumbs zur Navigation zwischen Seiten
+- Home-Button (🏠) führt zurück zur Startseite
+- Responsive Design für alle Geräte
 
 ## Technologie
 
