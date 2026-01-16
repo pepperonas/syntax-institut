@@ -236,11 +236,13 @@ h3 {
 
 .card-buttons .card-button {
     margin-top: 0;
+    flex: 1;
 }
 
 .card-button-secondary {
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     padding: 10px 14px;
+    flex: 0 0 auto !important;
 }
 
 .card-button-secondary:hover {
