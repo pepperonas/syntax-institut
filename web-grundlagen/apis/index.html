@@ -2582,6 +2582,8 @@
             currentSlide = n;
             slides[currentSlide].style.display = 'flex';
             updateProgress();
+            // Speichere aktuelle Folie im localStorage
+            localStorage.setItem('apis-currentSlide', currentSlide);
         }
 
         function navigatePrev() {
@@ -2598,8 +2600,14 @@
 
         // Initialisierung
         slides.forEach((slide, index) => {
-            if (index !== 0) slide.style.display = 'none';
+            slide.style.display = 'none';
         });
+
+        // Lade gespeicherte Folie oder starte bei 0
+        const savedSlide = localStorage.getItem('apis-currentSlide');
+        currentSlide = savedSlide ? parseInt(savedSlide, 10) : 0;
+        if (currentSlide < 0 || currentSlide >= slides.length) currentSlide = 0;
+        slides[currentSlide].style.display = 'flex';
         updateProgress();
 
         // Check for #quiz hash to jump directly to quiz slide
