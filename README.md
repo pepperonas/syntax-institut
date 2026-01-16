@@ -24,8 +24,7 @@ Die Präsentation behandelt folgende Themen:
 
 ## Live Demo
 
-Die Präsentation ist verfügbar unter:
-**https://pepperonas.github.io/syntax-institut/**
+<a href="https://pepperonas.github.io/syntax-institut/" target="_blank">https://pepperonas.github.io/syntax-institut/</a>
 
 ## Verwendung
 
