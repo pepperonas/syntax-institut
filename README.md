@@ -25,7 +25,7 @@ Die Präsentation behandelt folgende Themen:
 ## Live Demo
 
 Die Präsentation ist verfügbar unter:
-**https://pzedlmayer.github.io/syntax-institut/**
+**https://pepperonas.github.io/syntax-institut/**
 
 ## Verwendung
 
