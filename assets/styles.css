@@ -228,6 +228,17 @@ h3 {
     box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
 }
 
+/* Statistics card */
+.card-stats {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.card-stats:hover {
+    border-color: #ec4899;
+    box-shadow: 0 10px 40px rgba(236, 72, 153, 0.2);
+}
+
 /* ===== PLACEHOLDER PAGE ===== */
 .placeholder-content {
     text-align: center;

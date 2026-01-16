@@ -2716,6 +2716,23 @@
             }
             quizScoreText.textContent = message;
             quizResult.classList.add('show');
+
+            // Save result to LocalStorage
+            saveQuizResult(correctCount, 5);
+        }
+
+        function saveQuizResult(correct, total) {
+            const result = {
+                quiz: 'APIs',
+                correct: correct,
+                total: total,
+                percentage: Math.round((correct / total) * 100),
+                date: new Date().toISOString()
+            };
+
+            let history = JSON.parse(localStorage.getItem('syntaxQuizHistory') || '[]');
+            history.push(result);
+            localStorage.setItem('syntaxQuizHistory', JSON.stringify(history));
         }
 
         function resetQuiz() {

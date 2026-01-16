@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiken - Syntax Institut</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        .chart-container h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-table th {
+            color: #fbbf24;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .history-table td {
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+
+        .history-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .score-perfect {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .score-good {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        .score-ok {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .score-low {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .clear-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .clear-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .stat-number {
+                font-size: 36px;
+            }
+            .chart-wrapper {
+                height: 250px;
+            }
+            .history-table th,
+            .history-table td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-number {
+                font-size: 28px;
+            }
+            .chart-wrapper {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <a href="../index.html" class="logo">
+            <div class="logo-icon">S</div>
+            <div>Syntax<br>Institut</div>
+        </a>
+
+        <nav class="breadcrumb">
+            <a href="../index.html" class="breadcrumb-item breadcrumb-home">🏠</a>
+            <span class="breadcrumb-item breadcrumb-purple breadcrumb-current">Statistiken</span>
+        </nav>
+
+        <h1>Statistiken</h1>
+        <p class="subtitle">Deine Quiz-Ergebnisse im Überblick</p>
+
+        <div id="statsContent">
+            <!-- Content will be loaded by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        function loadStats() {
+            const history = JSON.parse(localStorage.getItem('syntaxQuizHistory') || '[]');
+            const container = document.getElementById('statsContent');
+
+            if (history.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <p>Noch keine Quiz-Ergebnisse vorhanden.</p>
+                        <a href="../web-grundlagen/apis/index.html#quiz" class="back-link">Zum ersten Quiz</a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate statistics
+            const totalQuizzes = history.length;
+            const avgScore = Math.round(history.reduce((sum, r) => sum + r.percentage, 0) / totalQuizzes);
+            const perfectScores = history.filter(r => r.percentage === 100).length;
+            const totalCorrect = history.reduce((sum, r) => sum + r.correct, 0);
+            const totalQuestions = history.reduce((sum, r) => sum + r.total, 0);
+            const bestScore = Math.max(...history.map(r => r.percentage));
+            const latestScore = history[history.length - 1].percentage;
+
+            // Get last 10 results for chart
+            const recentResults = history.slice(-10);
+
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Durchgeführte Tests</h3>
+                        <div class="stat-number">${totalQuizzes}</div>
+                        <div class="stat-label">Quiz${totalQuizzes !== 1 ? 's' : ''} absolviert</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Durchschnitt</h3>
+                        <div class="stat-number">${avgScore}%</div>
+                        <div class="stat-label">Erfolgsquote</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Beste Leistung</h3>
+                        <div class="stat-number">${bestScore}%</div>
+                        <div class="stat-label">${perfectScores} perfekte${perfectScores !== 1 ? '' : 's'} Ergebnis${perfectScores !== 1 ? 'se' : ''}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Gesamt</h3>
+                        <div class="stat-number">${totalCorrect}/${totalQuestions}</div>
+                        <div class="stat-label">Fragen richtig beantwortet</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Verlauf der letzten ${recentResults.length} Ergebnisse</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Ergebnis-Verteilung</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Letzte Ergebnisse</h3>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Quiz</th>
+                                <th>Ergebnis</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                        </tbody>
+                    </table>
+                    <div class="actions">
+                        <button class="clear-btn" onclick="clearHistory()">Verlauf löschen</button>
+                    </div>
+                </div>
+            `;
+
+            // Fill history table
+            const tbody = document.getElementById('historyTableBody');
+            const sortedHistory = [...history].reverse().slice(0, 20);
+            sortedHistory.forEach(result => {
+                const date = new Date(result.date);
+                const dateStr = date.toLocaleDateString('de-DE', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                let badgeClass = 'score-low';
+                if (result.percentage === 100) badgeClass = 'score-perfect';
+                else if (result.percentage >= 80) badgeClass = 'score-good';
+                else if (result.percentage >= 60) badgeClass = 'score-ok';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${result.quiz}</td>
+                        <td>${result.correct}/${result.total}</td>
+                        <td><span class="score-badge ${badgeClass}">${result.percentage}%</span></td>
+                    </tr>
+                `;
+            });
+
+            // Create progress chart
+            const progressCtx = document.getElementById('progressChart').getContext('2d');
+            new Chart(progressCtx, {
+                type: 'line',
+                data: {
+                    labels: recentResults.map((_, i) => `Test ${i + 1}`),
+                    datasets: [{
+                        label: 'Ergebnis %',
+                        data: recentResults.map(r => r.percentage),
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#6366f1',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: value => value + '%'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#94a3b8'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Create distribution chart
+            const distribution = {
+                '0-20%': 0,
+                '21-40%': 0,
+                '41-60%': 0,
+                '61-80%': 0,
+                '81-100%': 0
+            };
+
+            history.forEach(r => {
+                if (r.percentage <= 20) distribution['0-20%']++;
+                else if (r.percentage <= 40) distribution['21-40%']++;
+                else if (r.percentage <= 60) distribution['41-60%']++;
+                else if (r.percentage <= 80) distribution['61-80%']++;
+                else distribution['81-100%']++;
+            });
+
+            const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+            new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(distribution),
+                    datasets: [{
+                        data: Object.values(distribution),
+                        backgroundColor: [
+                            '#ef4444',
+                            '#f59e0b',
+                            '#fbbf24',
+                            '#6366f1',
+                            '#10b981'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#e2e8f0',
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function clearHistory() {
+            if (confirm('Möchtest du wirklich alle Quiz-Ergebnisse löschen?')) {
+                localStorage.removeItem('syntaxQuizHistory');
+                loadStats();
+            }
+        }
+
+        // Load stats on page load
+        loadStats();
+    </script>
+</body>
+</html>
