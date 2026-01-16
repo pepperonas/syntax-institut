@@ -2588,6 +2588,17 @@
         });
         updateProgress();
 
+        // Check for #quiz hash to jump directly to quiz slide
+        if (window.location.hash === '#quiz') {
+            const quizSlide = document.getElementById('quiz-slide');
+            if (quizSlide) {
+                const quizIndex = Array.from(slides).indexOf(quizSlide);
+                if (quizIndex !== -1) {
+                    showSlide(quizIndex);
+                }
+            }
+        }
+
         // Tastatur-Events (optional, kann auch entfernt werden)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
