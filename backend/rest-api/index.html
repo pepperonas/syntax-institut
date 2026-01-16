@@ -845,8 +845,7 @@
         totalSlidesEl.textContent = slides.length;
 
         function updateNavButtons() {
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === slides.length - 1;
+            // Buttons sind immer aktiv (Loop-Navigation)
         }
 
         function updateProgress() {
@@ -868,12 +867,16 @@
         function navigatePrev() {
             if (currentSlide > 0) {
                 showSlide(currentSlide - 1);
+            } else {
+                showSlide(slides.length - 1);
             }
         }
 
         function navigateNext() {
             if (currentSlide < slides.length - 1) {
                 showSlide(currentSlide + 1);
+            } else {
+                showSlide(0);
             }
         }
 
