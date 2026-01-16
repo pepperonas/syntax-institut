@@ -2610,7 +2610,7 @@
         slides[currentSlide].style.display = 'flex';
         updateProgress();
 
-        // Check for #quiz hash to jump directly to quiz slide
+        // Check for hash navigation
         if (window.location.hash === '#quiz') {
             const quizSlide = document.getElementById('quiz-slide');
             if (quizSlide) {
@@ -2619,6 +2619,12 @@
                     showSlide(quizIndex);
                 }
             }
+        } else if (window.location.hash === '#start') {
+            // Reset to first slide and clear saved position
+            localStorage.removeItem('apis-currentSlide');
+            showSlide(0);
+            // Clear hash from URL
+            history.replaceState(null, '', window.location.pathname);
         }
 
         // Tastatur-Events (optional, kann auch entfernt werden)

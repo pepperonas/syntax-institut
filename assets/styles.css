@@ -228,6 +228,25 @@ h3 {
     box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
 }
 
+.card-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.card-buttons .card-button {
+    margin-top: 0;
+}
+
+.card-button-secondary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    padding: 10px 14px;
+}
+
+.card-button-secondary:hover {
+    box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+}
+
 /* Statistics card */
 .card-stats {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
