@@ -237,6 +237,9 @@ h3 {
 .card-buttons .card-button {
     margin-top: 0;
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card-button-secondary {
